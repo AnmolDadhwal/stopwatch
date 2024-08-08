@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StopWatch</title>
+    <link rel="stylesheet" href="stopwatch.css">
+</head>
+<body>
+    <div class="stopwatch">
+        <div class="display" id="display">00:00:00</div>
+        <button id="start"><span>Start</span></button>
+        <button id="stop"><span>Stop</span></button>
+        <button id="reset"><span>Reset</span></button>
+    </div>
+    <script>
+        let timer;
+        let seconds = 0;
+        let isRunning = false;
+
+        var display = document.getElementById('display');
+        var startButton = document.getElementById('start');
+        var stopButton = document.getElementById('stop');
+        var resetButton = document.getElementById('reset');
+
+        function updateDisplay() {
+            var hours = Math.floor(seconds / 3600).toString();
+            var minutes = Math.floor((seconds % 3600) / 60).toString();
+            var secs = (seconds % 60).toString();
+            hours = hours < 10 ? '0' + hours : hours;
+            minutes = minutes < 10 ? '0' + minutes : minutes;
+            secs = secs < 10 ? '0' + secs : secs;
+            display.textContent = `${hours}:${minutes}:${secs}`;
+        }
+        function startTimer() {
+            if (isRunning) return;
+            isRunning = true;
+            timer = setInterval(function(){
+                seconds++;
+                updateDisplay();
+            }, 1000);
+        }
+        function stopTimer() {
+            if (!isRunning) return;
+            isRunning = false;
+            clearInterval(timer);
+        }
+        function resetTimer() {
+            stopTimer();
+            seconds = 0;
+            updateDisplay();
+        }
+        startButton.addEventListener('click', startTimer);
+        stopButton.addEventListener('click', stopTimer);
+        resetButton.addEventListener('click', resetTimer);
+    </script>
+</body>
+</html>
